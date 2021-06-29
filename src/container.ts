@@ -1,4 +1,4 @@
-import { animationClass, containerClass, containerInstance, dropPlaceholderFlexContainerClass, dropPlaceholderInnerClass, dropPlaceholderWrapperClass, stretcherElementClass, stretcherElementInstance, translationValue, wrapperClass, dropPlaceholderDefaultClass } from './constants';
+import { animationClass, containerClass, containerInstance, dropPlaceholderFlexContainerClass, dropPlaceholderInnerClass, dropPlaceholderWrapperClass, stretcherElementClass, stretcherElementInstance, translationValue, wrapperClass, dropPlaceholderDefaultClass, isDraggingValue } from './constants';
 import { defaultOptions } from './defaults';
 import { domDropHandler } from './dropHandlers';
 import { ContainerOptions, SmoothDnD, SmoothDnDCreator, DropPlaceholderOptions } from './exportTypes';
@@ -740,8 +740,12 @@ function Container(element: HTMLElement): (options?: ContainerOptions) => IConta
         }
         lastDraggableInfo = null;       
         dragHandler = getDragHandler(props);
-        dropHandler(draggableInfo, dragResult!);
-        dragResult = null;
+        if (dragResult) {
+          dropHandler(draggableInfo, dragResult!);
+          dragResult = null;
+        }
+
+        (draggableInfo.element as ElementX)[isDraggingValue] = false;
       },
       fireRemoveElement() {
         // will be called when container is disposed while dragging so ignore addedIndex

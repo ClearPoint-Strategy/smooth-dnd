@@ -158,9 +158,11 @@ function getDraggableInfo(draggableElement: HTMLElement): DraggableInfo {
 
 function handleDropAnimation(callback: Function) {
   function endDrop() {
-    Utils.removeClass(ghostInfo.ghost, 'animated');
-    ghostInfo!.ghost.style.transitionDuration = null!;
-    getGhostParent().removeChild(ghostInfo.ghost);
+    if (ghostInfo) {
+      Utils.removeClass(ghostInfo.ghost, 'animated');
+      ghostInfo!.ghost.style.transitionDuration = null!;
+      getGhostParent().removeChild(ghostInfo.ghost);
+    }
     callback();
   }
 
@@ -504,11 +506,14 @@ function getPointerEvent(e: TouchEvent & MouseEvent): MouseEvent & TouchEvent {
 
 function handleDragImmediate(draggableInfo: DraggableInfo, dragListeningContainers: IContainer[]) {
   let containerBoxChanged = false;
-  dragListeningContainers.forEach((p: IContainer) => {
-    const dragResult = p.handleDrag(draggableInfo)!;
-    containerBoxChanged = !!dragResult.containerBoxChanged || false;
-    dragResult.containerBoxChanged = false;
-  });
+
+  if (dragListeningContainers) {
+    dragListeningContainers.forEach((p: IContainer) => {
+      const dragResult = p.handleDrag(draggableInfo)!;
+      containerBoxChanged = !!dragResult.containerBoxChanged || false;
+      dragResult.containerBoxChanged = false;
+    });
+  }
 
   if (containerBoxChanged) {
     containerBoxChanged = false;
@@ -566,12 +571,13 @@ function fireOnDragStartEnd(isStart: boolean) {
 }
 
 function initiateDrag(position: MousePosition, cursor: string) {
-  if (grabbedElement !== null) {
+  if (grabbedElement !== null && !grabbedElement[constants.isDraggingValue]) {
     isDragging = true;
     const container = (containers.filter(p => grabbedElement!.parentElement === p.element)[0]) as IContainer;
     container.setDraggables();
     sourceContainerLockAxis = container.getOptions().lockAxis ? container.getOptions().lockAxis!.toLowerCase() as Axis : null;
 
+    grabbedElement[constants.isDraggingValue] = true;
     draggableInfo = getDraggableInfo(grabbedElement);
     ghostInfo = getGhostElement(
       grabbedElement,

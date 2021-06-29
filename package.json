@@ -1,6 +1,6 @@
 {
-  "name": "smooth-dnd",
-  "version": "0.12.1",
+  "name": "@ovos-media/smooth-dnd",
+  "version": "0.12.2",
   "description": "Drag and Drop library",
   "main": "./dist/index.js",
   "scripts": {
@@ -21,14 +21,20 @@
     "draggable",
     "dnd"
   ],
-  "author": {
-    "name": "Kutlu Sahin",
-    "email": "kutlugsahin@gmail.com"
-  },
+  "authors": [
+    {
+      "name": "Kutlu Sahin",
+      "email": "kutlugsahin@gmail.com"
+    },
+    {
+      "name": "Patrick Hübl-Neschkudla",
+      "email": "pn@ovos.at"
+    }
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kutlugsahin/smooth-dnd.git"
+    "url": "https://github.com/ovos/smooth-dnd.git"
   },
   "devDependencies": {
     "@babel/core": "7.3.4",

@@ -1,4 +1,6 @@
-# smooth-dnd
+# [forked] smooth-dnd
+
+> This forked version of `smooth-dnd` contains a fix for issues when clicking fast on draggable elements: https://github.com/kutlugsahin/smooth-dnd/issues/72
 
 A fast and lightweight drag&drop, sortable library for with many configuration options covering many d&d scenarios. There is no external dependencies. It uses css transitions for animations so it's hardware accelerated whenever possible.
 

@@ -10,6 +10,7 @@ import {
   translationValue,
   wrapperClass,
   dropPlaceholderDefaultClass,
+  isDraggingValue,
 } from "./constants";
 import { defaultOptions } from "./defaults";
 import { domDropHandler } from "./dropHandlers";
@@ -317,14 +318,14 @@ function setRemovedItemVisibilty({ draggables, layout }: ContainerProps) {
 
 function getPosition({ element, layout }: ContainerProps) {
   return ({ draggableInfo }: DragInfo) => {
-    // let hitElement = document.elementFromPoint(draggableInfo.position.x, draggableInfo.position.y);
+    let hitElement = document.elementFromPoint(
+      draggableInfo.position.x,
+      draggableInfo.position.y
+    );
 
     // TODO: if center is out of bounds use mouse position for hittest
     // if (!hitElement) {
-    let hitElement = document.elementFromPoint(
-      draggableInfo.mousePosition.x,
-      draggableInfo.mousePosition.y
-    );
+    //   hitElement = document.elementFromPoint(draggableInfo.mousePosition.x, draggableInfo.mousePosition.y);
     // }
 
     if (hitElement) {
@@ -938,8 +939,12 @@ function Container(
         }
         lastDraggableInfo = null;
         dragHandler = getDragHandler(props);
-        dropHandler(draggableInfo, dragResult!);
-        dragResult = null;
+        if (dragResult) {
+          dropHandler(draggableInfo, dragResult!);
+          dragResult = null;
+        }
+
+        (draggableInfo.element as ElementX)[isDraggingValue] = false;
       },
       fireRemoveElement() {
         // will be called when container is disposed while dragging so ignore addedIndex

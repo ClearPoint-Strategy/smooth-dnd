@@ -10,6 +10,7 @@ import {
   translationValue,
   wrapperClass,
   dropPlaceholderDefaultClass,
+  isDraggingValue,
 } from "./constants";
 import { defaultOptions } from "./defaults";
 import { domDropHandler } from "./dropHandlers";
@@ -938,8 +939,12 @@ function Container(
         }
         lastDraggableInfo = null;
         dragHandler = getDragHandler(props);
-        dropHandler(draggableInfo, dragResult!);
-        dragResult = null;
+        if (dragResult) {
+          dropHandler(draggableInfo, dragResult!);
+          dragResult = null;
+        }
+
+        (draggableInfo.element as ElementX)[isDraggingValue] = false;
       },
       fireRemoveElement() {
         // will be called when container is disposed while dragging so ignore addedIndex
